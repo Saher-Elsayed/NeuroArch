@@ -1,45 +1,35 @@
-// NeuroArch AXI-Lite Control Register Bank (16 registers)
-// Paper: Section VIII-C  — CTRL, WIN_LEN, THRESHOLD, STATUS, RESULT
+// AXI-Lite register bank (16 regs) - Cortex-M0 interface
+// CTRL[0]: soft_reset, CTRL[1]: clock_gate, CTRL[2]: task_mode
+// WIN_LEN: inference window (default 100), THRESHOLD: spike count alert
+// STATUS: busy[0] done[1], RESULT: {confidence[11:0], label[3:0]}
 `timescale 1ns/1ps
-module axi_lite_ctrl #(parameter ADDR_W = 6, DATA_W = 32)(
-    input  wire             clk, rst_n,
-    // AXI-Lite slave
-    input  wire [ADDR_W-1:0] s_axi_awaddr,
-    input  wire              s_axi_awvalid,
-    output reg               s_axi_awready,
-    input  wire [DATA_W-1:0] s_axi_wdata,
-    input  wire              s_axi_wvalid,
-    output reg               s_axi_wready,
-    output reg  [1:0]        s_axi_bresp,
-    output reg               s_axi_bvalid,
-    input  wire              s_axi_bready,
-    input  wire [ADDR_W-1:0] s_axi_araddr,
-    input  wire              s_axi_arvalid,
-    output reg               s_axi_arready,
-    output reg  [DATA_W-1:0] s_axi_rdata,
-    output reg  [1:0]        s_axi_rresp,
-    output reg               s_axi_rvalid,
-    input  wire              s_axi_rready,
-    // SNN control outputs
-    output reg  [6:0]  win_len,        // default 100
-    output reg  [11:0] threshold,      // spike count threshold
-    output reg         soft_reset,
-    // SNN status inputs
-    input  wire        inference_done,
-    input  wire [3:0]  comfort_label,
-    input  wire [11:0] confidence_score
+module axi_lite_ctrl #(parameter AW=6, DW=32)(
+    input  wire          clk, rst_n,
+    // Write channel
+    input  wire [AW-1:0] awaddr,  input wire awvalid,  output reg awready,
+    input  wire [DW-1:0] wdata,   input wire wvalid,   output reg wready,
+    output reg  [1:0]    bresp,   output reg bvalid,   input wire bready,
+    // Read channel
+    input  wire [AW-1:0] araddr,  input wire arvalid,  output reg arready,
+    output reg  [DW-1:0] rdata,   output reg [1:0] rresp, output reg rvalid,
+    input  wire          rready,
+    // SNN control
+    output reg  [6:0]    win_len, output reg [11:0] threshold,
+    output reg           soft_reset, output reg clock_gate,
+    input  wire          inference_done,
+    input  wire [3:0]    comfort_label, input wire [11:0] confidence
 );
-    // Registers: 0=CTRL, 1=WIN_LEN, 2=THRESHOLD, 3=STATUS, 4=RESULT
-    reg [DATA_W-1:0] regs [0:15];
+    reg [DW-1:0] regs [0:15];
+    localparam REG_CTRL=0, REG_WIN=1, REG_THR=2, REG_STAT=3, REG_RESULT=4;
     initial begin
-        regs[0] = 32'h0; regs[1] = 32'd100; regs[2] = 32'd10;
-        regs[3] = 32'h0; regs[4] = 32'h0;
+        regs[0]=0; regs[1]=100; regs[2]=10; regs[3]=0; regs[4]=0;
     end
-    assign win_len   = regs[1][6:0];
-    assign threshold = regs[2][11:0];
-    assign soft_reset = regs[0][0];
     always @(posedge clk) begin
-        regs[3] <= {31'h0, inference_done};
-        regs[4] <= {16'h0, confidence_score, comfort_label};
+        regs[REG_STAT]   <= {30'h0, inference_done, 1'b0};
+        regs[REG_RESULT] <= {16'h0, confidence, comfort_label};
     end
+    assign win_len   = regs[REG_WIN][6:0];
+    assign threshold = regs[REG_THR][11:0];
+    assign soft_reset = regs[REG_CTRL][0];
+    assign clock_gate = regs[REG_CTRL][1];
 endmodule

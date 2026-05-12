@@ -1,0 +1,91 @@
+{
+  "schema_version": "IFC 4.3",
+  "psets": {
+    "Pset_ThermalComfort": {
+      "description": "SNN comfort classification per IFC Space",
+      "update_interval_s": 1,
+      "properties": {
+        "ComfortClass": {
+          "type": "IfcLabel",
+          "values": [
+            "Cold",
+            "Cool",
+            "Neutral",
+            "Warm",
+            "Hot"
+          ]
+        },
+        "SNNConfidence": {
+          "type": "IfcReal",
+          "range": [
+            0.0,
+            1.0
+          ],
+          "unit": "dimensionless"
+        },
+        "PMVValue": {
+          "type": "IfcReal",
+          "range": [
+            -3.0,
+            3.0
+          ],
+          "unit": "dimensionless"
+        },
+        "PPDValue": {
+          "type": "IfcReal",
+          "range": [
+            5.0,
+            100.0
+          ],
+          "unit": "percent"
+        }
+      }
+    },
+    "Pset_HVACConfig": {
+      "description": "MARL setpoints per IFC Zone",
+      "update_interval_s": 1,
+      "properties": {
+        "SupplyTempSet": {
+          "type": "IfcReal",
+          "range": [
+            15.0,
+            25.0
+          ],
+          "unit": "degC"
+        },
+        "BlindAngleEast": {
+          "type": "IfcReal",
+          "range": [
+            0.0,
+            1.0
+          ],
+          "unit": "fraction"
+        },
+        "BlindAngleWest": {
+          "type": "IfcReal",
+          "range": [
+            0.0,
+            1.0
+          ],
+          "unit": "fraction"
+        },
+        "LightingSetpoint": {
+          "type": "IfcReal",
+          "range": [
+            300,
+            750
+          ],
+          "unit": "lux"
+        },
+        "MARLActionConf": {
+          "type": "IfcReal",
+          "range": [
+            0.0,
+            1.0
+          ],
+          "unit": "dimensionless"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,15 @@
+sensor,ensemble,rank
+air_temp,0.187,1
+radiant_temp,0.143,2
+humidity,0.112,3
+air_speed,0.098,4
+co2_ppm,0.089,5
+lux,0.076,6
+sound_db,0.042,10
+occupancy,0.071,7
+outdoor_temp,0.063,8
+solar_rad,0.055,9
+time_sin,0.031,11
+time_cos,0.012,12
+dow_sin,0.011,13
+dow_cos,0.01,14

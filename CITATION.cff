@@ -1,7 +1,6 @@
 cff-version: 1.2.0
-title: "NeuroArch: Neuromorphic-VR Co-Design for Real-Time Building Energy and Comfort Optimization"
-message: "If you use this software or data, please cite it as below."
-type: software
+message: "If you use this software, please cite as below."
+title: "NeuroArch: Spiking Neural Networks and Virtual Reality for Building Energy Optimization"
 authors:
   - family-names: Ali
     given-names: Mohamed
@@ -13,25 +12,18 @@ authors:
     orcid: https://orcid.org/0009-0007-7672-264X
   - family-names: Aziz
     given-names: Khairi Azhar
-    name-particle: Ts. Dr.
-    affiliation: Universiti Tenaga Nasional (UNITEN)
-    email: khairi.azhar@uniten.edu.my
+    affiliation: UNITEN
+type: software
 repository-code: https://github.com/NeuroArch-Lab/NeuroArch
+date-released: 2026
+abstract: >
+  SNN + MARL for building energy optimization with VR BIM streaming.
+  IEEE Access, 2026. MS ID: Access-2026-16730.
+keywords:
+  - spiking neural networks
+  - multi-agent reinforcement learning
+  - building energy optimization
+  - virtual reality
+  - BIM
+  - FPGA
 license: MIT
-version: 1.0.0
-date-released: "2025-01-01"
-doi: 10.1109/ACCESS.2025.XXXXXXX
-preferred-citation:
-  type: article
-  title: "NeuroArch: Neuromorphic-VR Co-Design for Real-Time Building Energy and Comfort Optimization"
-  authors:
-    - family-names: Ali
-      given-names: Mohamed
-    - family-names: Elsayed
-      given-names: Saher
-    - family-names: Aziz
-      given-names: Khairi Azhar
-      name-particle: Ts. Dr.
-  journal: "IEEE ACCESS"
-  year: 2025
-  doi: 10.1109/ACCESS.2025.XXXXXXX

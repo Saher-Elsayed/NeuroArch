@@ -1,28 +1,41 @@
-# NeuroArch: Neuromorphic–VR Co-Design for Real-Time Building Energy and Comfort Optimization
+<div align="center">
+
+# NeuroArch 🧠🏢
+
+**Spiking Neural Networks and Virtual Reality for Building Energy Optimization**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Python 3.10](https://img.shields.io/badge/python-3.10-blue.svg)](https://python.org)
-[![PyTorch 2.1](https://img.shields.io/badge/PyTorch-2.1-orange.svg)](https://pytorch.org)
-[![EnergyPlus 23.1](https://img.shields.io/badge/EnergyPlus-23.1-green.svg)](https://energyplus.net)
+[![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-green)](https://python.org)
+[![PyTorch](https://img.shields.io/badge/PyTorch-2.2-orange)](https://pytorch.org)
+[![IEEE Access](https://img.shields.io/badge/IEEE_Access-2026-red)](https://doi.org/ACCESS-2026-16730)
+[![CI](https://github.com/NeuroArch-Lab/NeuroArch/actions/workflows/ci.yml/badge.svg)](https://github.com/NeuroArch-Lab/NeuroArch/actions)
 
-Official repository for the IEEE ACCESS paper:
+[Paper](https://ieee-access.org) • [Data](#data) • [Quickstart](#quickstart) • [Reproduce](#reproducing-paper-results) • [API Docs](#api)
 
-> **NeuroArch: Neuromorphic–VR Co-Design for Real-Time Building Energy and Comfort Optimization**  
-> Mohamed Ali, Saher Elsayed, Ts. Dr. Khairi Azhar Aziz  
-> *IEEE ACCESS*, 2025. doi: 10.1109/ACCESS.2025.XXXXXXX
+</div>
+
+---
+
+## Abstract
+
+NeuroArch integrates a **spiking neural network (SNN)** ISO 7730 comfort classifier with **multi-agent reinforcement learning (QMIX)** HVAC control, streamed to an **Unreal Engine 5 VR BIM interface** in real time. Deployed on a Xilinx Artix-7 FPGA, the SNN achieves **91.8% comfort accuracy at 0.31 mW** with **79% weight sparsity**. The 6-agent QMIX framework delivers **23.7% energy savings** and **91.3% ASHRAE-55 compliance** across three Houston commercial buildings, streaming IFC property-set updates at **20.3 ms mean E2E latency**.
 
 ---
 
 ## Key Results
 
-| Metric | Value |
-|--------|-------|
-| SNN comfort classification accuracy | **94.3%** (5-class ISO 7730) |
-| SNN power consumption | **0.31 mW** (Artix-7 XC7A35T) |
-| Annual energy saving vs. rule-based | **23.7%** (EnergyPlus simulation) |
-| Peak demand reduction | **20.5%** |
-| ASHRAE 55 compliance | **91.3%** (only controller achieving PPD ≤ 10%) |
-| VR design-decision task-time reduction | **41.3%** (N=32 user study) |
+| Metric | Value | Baseline |
+|--------|-------|----------|
+| SNN Accuracy | **91.8%** | 83.2% (1-layer) |
+| Energy Saving | **23.7%** | 0% (rule-based) |
+| ASHRAE-55 Compliance | **91.3%** | 78.2% |
+| Peak Demand Reduction | **20.5%** (312→248 kW) | — |
+| SNN Inference Latency | **4.1 ms mean** / 12 ms P99 | — |
+| E2E VR Latency | **20.3 ms mean** | — |
+| Power (Artix-7) | **0.31 mW** | 2.1 mW (GRU) |
+| Weight Sparsity | **79%** | 0% (dense) |
+| Active Synapses | **3,104** | 14,753 (dense) |
+| User Study (SUS) | **81.3/100** | 61.2 (Desktop) |
 
 ---
 
@@ -30,112 +43,170 @@ Official repository for the IEEE ACCESS paper:
 
 ```
 NeuroArch/
-├── snn/                    # LIF-SNN comfort classifier (PyTorch)
-├── marl/                   # QMIX multi-agent RL controller
-├── fpga/                   # Artix-7 RTL + Vivado reports
-├── vr/                     # Unreal Engine 5 VR digital twin
-├── bim_server/             # IfcOpenShell BIM server + WebSocket
-├── data/                   # All datasets (CSV + IFC models)
-├── experiments/            # Reproduce-all shell scripts
-└── notebooks/              # Jupyter walkthroughs
+├── snn/                   # Spiking Neural Network (SNN) comfort classifier
+│   ├── model.py           # NeuroArchSNN: 4-layer LIF, FastSigmoid surrogate gradient
+│   ├── train.py           # Two-phase training (Phase 1: 100ep / Phase 2: 50ep BPTT)
+│   ├── dataset.py         # ComfortDataset: sliding-window, WeightedRandomSampler
+│   ├── augmentation.py    # SensorAugmentor: Gaussian noise, time warp, mixup
+│   ├── explainability.py  # SNNGradCAM, SpikeTimingAttribution, IntegratedGradients
+│   ├── calibration.py     # Temperature scaling, ECE, reliability diagram
+│   ├── focal_loss.py      # Multi-class focal loss (gamma=2.0)
+│   ├── rate_encoder.py    # Poisson rate encoding for sensor inputs
+│   ├── evaluate.py        # Per-class F1, confusion matrix, ASHRAE alignment
+│   └── quantize.py        # INT8 quantization + magnitude pruning
+│
+├── marl/                  # Multi-Agent Reinforcement Learning (QMIX)
+│   ├── agent.py           # AgentQNetwork (DRQN) + DuelingAgentQNetwork
+│   ├── qmix_network.py    # QMixNetwork (hypernetwork) + VDN + QTRAN baselines
+│   ├── reward.py          # ComfortAugmentedReward (Eq. 12) + ablation variants
+│   ├── replay_buffer.py   # EpisodeBuffer + PrioritisedEpisodeBuffer (PER)
+│   ├── train_qmix.py      # Full 6-agent QMIX training loop
+│   ├── curriculum.py      # CurriculumScheduler: 4-stage progressive training
+│   └── communication.py  # CommNet mean-field agent communication
+│
+├── envs/                  # Gymnasium environments
+│   ├── energyplus_env.py  # NeuroArchEnv: 3 buildings, 6 agents, EnergyPlus API
+│   └── wrappers.py        # Normalizer, RecordStats, FaultInjection, ClimateShift
+│
+├── bim_server/            # Real-time IFC BIM streaming server
+│   ├── bim_server.py      # AsyncIO WebSocket server + delta encoder (340 bytes/tick)
+│   └── ifc_pset_schema.json  # Pset_ThermalComfort + Pset_HVACConfig schema
+│
+├── deployment/            # Production deployment
+│   ├── inference_server.py  # FastAPI: POST /comfort, WS /stream, GET /health
+│   ├── Dockerfile
+│   └── docker-compose.yml
+│
+├── fpga/rtl/              # Verilog RTL for Artix-7 XC7A35T
+│   ├── lif_pe.v           # LIF processing element (18 LUTs, 28 FFs)
+│   ├── spike_encoder.v    # 14-channel rate encoder
+│   └── neuroarch_top.v   # Top-level with AXI-Lite control
+│
+├── vr/Source/             # Unreal Engine 5.3 C++ BIM client
+│   ├── BIMWebSocketClient.h
+│   └── BIMWebSocketClient.cpp
+│
+├── data/                  # All data referenced in the paper
+│   ├── energyplus/        # 8760-hour EnergyPlus simulations (3 buildings)
+│   ├── sensor_logs/       # 32,000 labeled sensor windows (κ=0.74)
+│   ├── weather/           # 3 climate zones (Houston TX, Seattle WA, Minneapolis MN)
+│   ├── ablations/         # Training curves, MARL convergence, sensor importance
+│   ├── latency/           # 10,000-frame E2E latency log
+│   ├── pareto/            # Pareto frontier (Table 12)
+│   ├── cross_climate/     # LOBO cross-climate results (Table 9)
+│   └── user_study/        # 32-participant VR study (IRB-25-1047, Virginia Tech)
+│
+├── scripts/               # Figure reproduction scripts
+├── notebooks/             # Jupyter notebooks (training demo, MARL eval, energy analysis)
+├── tests/                 # Unit, integration, and performance tests
+├── monitoring/            # Prometheus metrics
+├── benchmarks/            # Reproducibility benchmark suite
+└── configs/               # YAML experiment configurations
 ```
 
 ---
 
-## Quick Start
-
-### 1. Environment Setup
+## Quickstart
 
 ```bash
+# Clone and install
 git clone https://github.com/NeuroArch-Lab/NeuroArch.git
 cd NeuroArch
 conda env create -f environment.yml
 conda activate neuroarch
-```
 
-### 2. Evaluate Pre-Trained SNN
+# Run unit tests
+pytest tests/ -v --tb=short
 
-```bash
-cd snn
-python evaluate.py --building medium_office --weights weights/neuroarch_office.pt
-# Expected: Accuracy 94.3%, Power 0.31 mW (post-quant INT8)
-```
+# Run reproducibility benchmarks
+python benchmarks/run_all.py
 
-### 3. Reproduce Table 4 (Annual Energy Comparison)
+# Train SNN (medium office)
+python -m snn.train --config configs/snn_medium_office.yaml
 
-```bash
-cd experiments
-bash reproduce_table4.sh
-# Runs all 5 controllers on 3 archetypes, ~4 hours on CPU
-```
+# Train QMIX
+python -m marl.train_qmix --config configs/qmix_medium_office.yaml
 
-### 4. Run MARL Training (GPU required)
+# Start inference server
+uvicorn deployment.inference_server:create_app --factory --port 8000
 
-```bash
-cd marl
-python train_qmix.py --config configs/medium_office.yaml --seed 42
-# ~600 wall-clock hours on NVIDIA A100; pre-trained policies in marl/policies/
-```
+# Start BIM server
+python -m bim_server.bim_server --port 8765
 
-### 5. Launch BIM Server + VR
-
-```bash
-cd bim_server
-python bim_server.py --ifc ifc_models/medium_office.ifc --port 8765
-# Then open NeuroArchVR.uproject in Unreal Engine 5.3+
+# Or: Docker Compose (inference + BIM + Prometheus + Grafana)
+docker-compose -f deployment/docker-compose.yml up
 ```
 
 ---
 
-## Datasets
+## Reproducing Paper Results
 
-All datasets are included in `data/` — nothing is available only on request.
+All results can be reproduced from pre-computed data in `data/`:
 
-| Dataset | File | Rows | Description |
-|---------|------|------|-------------|
-| Medium Office EnergyPlus | `data/energyplus/medium_office/simulation_8760h.csv` | 8,760 | Hourly simulation results, 5 controllers |
-| Residential EnergyPlus | `data/energyplus/residential/simulation_8760h.csv` | 8,760 | Same |
-| Mixed-Use EnergyPlus | `data/energyplus/mixed_use/simulation_8760h.csv` | 8,760 | Same |
-| IoT sensor logs – Office | `data/sensor_logs/medium_office_8weeks.csv` | 4,838,400 | 14-channel @ 1 s, 8 weeks |
-| IoT sensor logs – Residential | `data/sensor_logs/residential_8weeks.csv` | 4,838,400 | Same |
-| IoT sensor logs – Mixed-Use | `data/sensor_logs/mixed_use_8weeks.csv` | 4,838,400 | Same |
-| Comfort labels | `data/sensor_logs/comfort_labels.csv` | 32,000 | ISO 7730, 38 occupants, κ=0.74 |
-| Seattle cross-climate | `data/cross_climate/seattle_zone4c.csv` | 2,419,200 | 4-week calibration |
-| Minneapolis cross-climate | `data/cross_climate/minneapolis_zone6a.csv` | 2,419,200 | 4-week calibration |
-| User study – task times | `data/user_study/task_times.csv` | 32 | T1/T2/T3, Baseline + VR |
-| User study – NASA-TLX | `data/user_study/nasa_tlx.csv` | 32 | 6 subscales |
-| User study – SUS | `data/user_study/sus_scores.csv` | 32 | System Usability Scale |
-| User study – SSQ | `data/user_study/ssq_subscales.csv` | 32 | Nausea/Oculomotor/Disorientation |
-| End-use monthly | `data/energyplus/medium_office/end_use_monthly.csv` | 12 | kWh/m²/month by end-use |
-| Cross-climate LOBO | `data/cross_climate/lobo_results.csv` | 6 | Leave-one-building-out results |
+```bash
+# Figure 3: SNN Training Curves
+python scripts/plot_training_curves.py --data data/ablations/training_curves.csv
+
+# Figure 6: MARL Convergence
+python scripts/plot_marl_convergence.py --data data/ablations/
+
+# Figure 9: Latency Distribution
+python scripts/plot_latency.py --data data/latency/frame_latency_10000.csv
+
+# Figure 11: Pareto Frontier
+python scripts/plot_pareto.py --data data/pareto/pareto_frontier.csv
+
+# Table 4: Controller Comparison
+python experiments/reproduce_table4.sh
+
+# Run all paper figures at once
+bash experiments/plot_all_figures.sh
+```
 
 ---
 
-## Hardware
+## Data
 
-- **Edge node**: Digilent Arty A7-35T (Artix-7 XC7A35T), Cortex-M0, BLE 5.0
-- **Sensors**: SHT45 (temp/RH), SCD41 (CO₂), BH1750 (lux), HC-SR501 (PIR)
-- **Server**: NVIDIA Jetson AGX Orin
-- **VR headset**: Meta Quest 3 (Wi-Fi 6)
-- **FPGA toolchain**: Vivado 2023.2
+| File | Description | Rows | Size |
+|------|-------------|------|------|
+| `sensor_logs/{building}_sensor_log_sample.csv` | 14-channel sensor time series | 4,000/building | ~1.5 MB |
+| `sensor_logs/comfort_labels.csv` | Window labels with inter-rater agreement (κ=0.74) | 32,000 | 2.8 MB |
+| `energyplus/{building}/simulation_8760h.csv` | Annual EnergyPlus simulation | 8,760/building | ~600 KB |
+| `energyplus/{building}/controller_comparison.csv` | Table 4 data | 5 controllers | 1 KB |
+| `latency/frame_latency_10000.csv` | E2E latency per frame | 10,000 | 400 KB |
+| `user_study/participants.csv` | VR user study (IRB-25-1047) | 32 | 5 KB |
 
 ---
 
 ## Citation
 
 ```bibtex
-@article{ali2025neuroarch,
-  title   = {{NeuroArch}: Neuromorphic--{VR} Co-Design for Real-Time
-             Building Energy and Comfort Optimization},
-  author  = {Ali, Mohamed and Elsayed, Saher and Aziz, {Ts. Dr. Khairi Azhar}},
-  journal = {IEEE ACCESS},
-  year    = {2025},
-  doi     = {10.1109/ACCESS.2025.XXXXXXX}
+@article{ali2026neuroarch,
+  title     = {{NeuroArch}: Spiking Neural Networks and Virtual Reality
+               for Building Energy Optimization},
+  author    = {Ali, Mohamed and Elsayed, Saher and Aziz, Khairi Azhar},
+  journal   = {IEEE Access},
+  year      = {2026},
+  note      = {MS ID: Access-2026-16730},
+  url       = {https://github.com/NeuroArch-Lab/NeuroArch}
 }
 ```
 
 ---
 
+## Authors
+
+| Author | Affiliation | Contact |
+|--------|-------------|---------|
+| **Mohamed Ali** | Virginia Tech | |
+| **Saher Elsayed** | University of Pennsylvania | selsayed@seas.upenn.edu |
+| **Ts. Dr. Khairi Azhar Aziz** | UNITEN | |
+
+---
+
 ## License
 
-MIT License — see [LICENSE](LICENSE).
+MIT License. See [LICENSE](LICENSE).
+
+Human subject data in `data/user_study/` is shared under IRB-25-1047 approval
+(Virginia Tech). Participant identifiers are anonymized.

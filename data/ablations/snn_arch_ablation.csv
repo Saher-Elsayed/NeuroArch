@@ -1,0 +1,8 @@
+config,layers,acc_pct,power_mW,sparsity_pct,synapses
+4-L LIF full (NeuroArch),4,94.3,0.31,79,3104
+4-L LIF no rate reg,4,94.5,0.4,9,3104
+4-L LIF no surrogate,4,86.5,0.31,79,3104
+4-L ReLU ANN,4,82.5,3.8,0,3104
+2-layer LIF,2,88.3,0.19,82,1408
+6-layer LIF,6,95.1,0.37,76,4320
+INT8 quantized,4,93.9,0.23,79,3104

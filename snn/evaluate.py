@@ -1,49 +1,24 @@
-"""
-Evaluate pre-trained SNN: per-building accuracy, LOBO CV, confusion matrix.
-Usage:
-    python evaluate.py --building medium_office
-"""
-import argparse, torch, numpy as np
-from pathlib import Path
-from sklearn.metrics import confusion_matrix, classification_report
-from model import LIFComfortClassifier
-from rate_encoder import rate_encode
+"""SNN evaluation utilities: per-class metrics, confusion matrix, ASHRAE alignment."""
+import torch, numpy as np
+from sklearn.metrics import classification_report, confusion_matrix
 
-CLASSES = ["Cold","Cool","Neutral","Warm","Hot"]
+CLASSES = ["Cold", "Cool", "Neutral", "Warm", "Hot"]
 
-def evaluate(building="medium_office", T=100, data_root="../data/sensor_logs"):
-    device = torch.device("cpu")
-    weights = Path(f"weights/neuroarch_{building}.pt")
-    model = LIFComfortClassifier(T=T).to(device)
-    if weights.exists():
-        model.load_state_dict(torch.load(weights, map_location=device))
-        print(f"Loaded weights: {weights}")
-    else:
-        print(f"[WARNING] No weights found at {weights}; using random init")
-    model.eval()
-
-    data = Path(data_root) / building
-    X = torch.tensor(np.load(data/"X_test.npy"), dtype=torch.float32)
-    y = torch.tensor(np.load(data/"y_test.npy"), dtype=torch.long)
-
+def evaluate_model(model, loader, device):
+    model.eval(); preds, labels = [], []
     with torch.no_grad():
-        sp    = rate_encode(X, T=T)
-        preds = model.predict(sp)
-        kappa = model.confidence(sp)
+        for x, y in loader:
+            logits = model(x.to(device))
+            preds.extend(logits.argmax(-1).cpu().numpy())
+            labels.extend(y.numpy())
+    return np.array(preds), np.array(labels)
 
-    acc = 100.0*(preds==y).float().mean().item()
-    cm  = confusion_matrix(y.numpy(), preds.numpy())
-    print(f"\nBuilding: {building}")
-    print(f"Accuracy: {acc:.1f}%  |  Mean κ_SNN: {kappa.mean():.3f}")
-    print("\nConfusion matrix (rows=true, cols=pred):")
-    print(cm)
-    print("\nClassification report:")
-    print(classification_report(y.numpy(), preds.numpy(), target_names=CLASSES))
-    return acc, cm
+def per_class_metrics(preds, labels):
+    return classification_report(labels, preds, target_names=CLASSES, output_dict=True)
 
-if __name__ == "__main__":
-    p = argparse.ArgumentParser()
-    p.add_argument("--building", default="medium_office")
-    p.add_argument("--T", type=int, default=100)
-    args = p.parse_args()
-    evaluate(args.building, args.T)
+def ashrae_alignment(preds, labels):
+    """ASHRAE-55 allows PMV ∈ [-0.5, 0.5] (classes 1,2,3 = Cool/Neutral/Warm)."""
+    ok_classes = {1, 2, 3}
+    ashrae_preds  = np.array([1 if p in ok_classes else 0 for p in preds])
+    ashrae_labels = np.array([1 if l in ok_classes else 0 for l in labels])
+    return (ashrae_preds == ashrae_labels).mean()

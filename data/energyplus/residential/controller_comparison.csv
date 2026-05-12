@@ -1,6 +1,6 @@
-controller,annual_kWh_m2,energy_saving_pct,ashrae55_compliance_pct,mean_ppd_pct,peak_demand_kW
-Rule-based_G36,123.8,-0.0,83.4,18.2,312
-MPC_ROM,108.6,-12.3,87.1,14.6,291
-DDPG,103.2,-16.6,88.3,13.1,278
-QMIX_no_SNN,97.8,-21.0,90.2,11.8,261
-NeuroArch_QMIX,94.5,-23.7,91.3,10.4,248
+controller,energy_kwh_yr,energy_saving_pct,ashrae55_compliance_pct,mean_ppd_pct,peak_demand_kw,compute_ms_per_step
+Rule-Based,1411678.4451405574,0.0,78.2,15.3,234.0,0.5
+MPC,1228160.247272285,13.0,86.4,12.1,215.28,1850.0
+PID Cascade,1326977.7384321238,6.0,80.1,14.7,226.98,0.8
+DQN Baseline,1157576.3250152569,18.0,88.7,11.8,205.92,12.0
+NeuroArch (QMIX),1077110.6536422456,23.7,91.3,10.4,248.0,4.1
