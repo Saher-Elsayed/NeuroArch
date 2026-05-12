@@ -184,7 +184,7 @@ bash experiments/plot_all_figures.sh
 @article{ali2026neuroarch,
   title     = {{NeuroArch}: Spiking Neural Networks and Virtual Reality
                for Building Energy Optimization},
-  author    = {Ali, Mohamed and Elsayed, Saher and Aziz, Khairi Azhar},
+  author    = {Elsayed, Saher and Ali, Mohamed and Aziz, Khairi Azhar},
   journal   = {IEEE Access},
   year      = {2026},
   note      = {MS ID: Access-2026-16730},
@@ -198,8 +198,8 @@ bash experiments/plot_all_figures.sh
 
 | Author | Affiliation | Contact |
 |--------|-------------|---------|
-| **Mohamed Ali** | Virginia Tech | |
 | **Saher Elsayed** | University of Pennsylvania | selsayed@seas.upenn.edu |
+| **Mohamed Ali** | Virginia Tech | |
 | **Ts. Dr. Khairi Azhar Aziz** | UNITEN | |
 
 ---
