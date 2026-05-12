@@ -1,0 +1,6 @@
+comfort_class,int_label,fraction_pct,count_train,count_val,count_test,krippendorff_alpha
+Cold,0,4.2,940,134,134,0.74
+Cool,1,11.8,2643,377,377,0.74
+Neutral,2,61.4,13753,1964,1964,0.74
+Warm,3,17.3,3875,553,553,0.74
+Hot,4,5.3,1187,169,169,0.74

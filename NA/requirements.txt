@@ -1,0 +1,34 @@
+# Core ML
+torch>=2.2.0
+numpy>=1.26
+pandas>=2.1
+scipy>=1.11
+scikit-learn>=1.4
+
+# Training
+tqdm>=4.66
+pyyaml>=6.0
+matplotlib>=3.8
+seaborn>=0.13
+
+# Environments
+gymnasium>=0.29
+
+# Deployment
+fastapi>=0.109
+uvicorn[standard]>=0.27
+websockets>=12.0
+pydantic>=2.5
+prometheus_client>=0.19
+
+# Testing
+pytest>=7.4
+pytest-cov>=4.1
+
+# Code quality
+ruff>=0.1
+black>=23.0
+isort>=5.12
+
+# Optional
+ifcopenshell>=0.7

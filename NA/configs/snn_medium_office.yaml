@@ -1,0 +1,23 @@
+# SNN configuration for medium_office building — matches paper Table 3
+data:
+  root: data/
+  buildings: [medium_office]
+  stride: 50
+  noise_std: 0.01
+
+snn:
+  n_inputs: 14
+  hidden_sizes: [64, 32, 32]
+  n_classes: 5
+  tau_mem: [10.0, 20.0, 5.0]
+  T: 100
+  rate_reg_lambda: 0.01
+  target_sparsity: 0.79
+  dropout: 0.10
+
+training:
+  batch_size: 256
+  focal_gamma: 2.0
+
+output:
+  dir: runs/snn_medium_office/

@@ -1,0 +1,89 @@
+name: NeuroArch CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+env:
+  PYTHON_VERSION: "3.11"
+
+jobs:
+  lint:
+    name: Lint & Format Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "${{ env.PYTHON_VERSION }}"}
+      - run: pip install ruff black isort
+      - run: ruff check snn/ marl/ envs/ bim_server/ --ignore E501
+      - run: black --check snn/ marl/ envs/ --line-length 100
+      - run: isort --check-only snn/ marl/ envs/
+
+  unit-tests:
+    name: Unit Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "${{ env.PYTHON_VERSION }}"}
+      - name: Install dependencies
+        run: |
+          pip install torch --index-url https://download.pytorch.org/whl/cpu
+          pip install pytest pytest-cov numpy pandas scipy pyyaml
+      - name: Run unit tests
+        run: pytest tests/unit/ tests/fixtures/ -v --tb=short --cov=snn --cov=marl --cov-report=xml
+      - uses: codecov/codecov-action@v4
+        with: {file: coverage.xml, flags: unit}
+
+  integration-tests:
+    name: Integration Tests
+    runs-on: ubuntu-latest
+    needs: unit-tests
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "${{ env.PYTHON_VERSION }}"}
+      - run: |
+          pip install torch --index-url https://download.pytorch.org/whl/cpu
+          pip install pytest numpy pandas scipy gymnasium pyyaml
+      - run: pytest tests/integration/ -v --tb=short -x
+
+  performance-tests:
+    name: Latency Regression Tests
+    runs-on: ubuntu-latest
+    needs: unit-tests
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "${{ env.PYTHON_VERSION }}"}
+      - run: |
+          pip install torch --index-url https://download.pytorch.org/whl/cpu
+          pip install pytest numpy
+      - run: pytest tests/performance/ -v --tb=short
+
+  build-docker:
+    name: Docker Build Check
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: deployment/Dockerfile
+          push: false
+          tags: neuroarch:ci
+
+  security-scan:
+    name: Security Audit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "${{ env.PYTHON_VERSION }}"}
+      - run: pip install bandit safety
+      - run: bandit -r snn/ marl/ envs/ bim_server/ -ll -q
+      - run: safety check --continue-on-error

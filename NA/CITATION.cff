@@ -1,0 +1,29 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite as below."
+title: "NeuroArch: Spiking Neural Networks and Virtual Reality for Building Energy Optimization"
+authors:
+  - family-names: Ali
+    given-names: Mohamed
+    affiliation: Virginia Tech
+  - family-names: Elsayed
+    given-names: Saher
+    affiliation: University of Pennsylvania
+    email: selsayed@seas.upenn.edu
+    orcid: https://orcid.org/0009-0007-7672-264X
+  - family-names: Aziz
+    given-names: Khairi Azhar
+    affiliation: UNITEN
+type: software
+repository-code: https://github.com/NeuroArch-Lab/NeuroArch
+date-released: 2026
+abstract: >
+  SNN + MARL for building energy optimization with VR BIM streaming.
+  IEEE Access, 2026. MS ID: Access-2026-16730.
+keywords:
+  - spiking neural networks
+  - multi-agent reinforcement learning
+  - building energy optimization
+  - virtual reality
+  - BIM
+  - FPGA
+license: MIT

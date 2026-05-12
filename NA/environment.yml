@@ -1,0 +1,32 @@
+name: neuroarch
+channels: [pytorch, nvidia, conda-forge, defaults]
+dependencies:
+  - python=3.11
+  - pip
+  - numpy>=1.26
+  - pandas>=2.1
+  - scipy>=1.11
+  - matplotlib>=3.8
+  - seaborn>=0.13
+  - pyyaml>=6.0
+  - tqdm>=4.66
+  - jupyter>=1.0
+  - ipywidgets
+  - pip:
+    - torch==2.2.0
+    - torchvision==0.17.0
+    - torchaudio==2.2.0
+    - gymnasium>=0.29
+    - fastapi>=0.109
+    - uvicorn[standard]>=0.27
+    - websockets>=12.0
+    - pydantic>=2.5
+    - scikit-learn>=1.4
+    - ifcopenshell>=0.7; platform_system == "Linux"
+    - prometheus_client>=0.19
+    - pytest>=7.4
+    - pytest-cov>=4.1
+    - ruff>=0.1
+    - black>=23.0
+    - isort>=5.12
+    - bandit>=1.7

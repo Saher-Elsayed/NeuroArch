@@ -1,0 +1,2 @@
+T_SNN_mean_ms,T_SNN_p99_ms,T_BIM_mean_ms,T_WS_mean_ms,T_UE5_mean_ms,total_mean_ms,total_p50_ms,total_p95_ms,total_p99_ms,budget_ms,budget_met_pct
+4.1,12.0,2.3,1.8,12.1,20.3,20.6,26.0,28.6,33.3,99.9

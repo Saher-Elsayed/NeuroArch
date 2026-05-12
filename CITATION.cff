@@ -1,0 +1,37 @@
+cff-version: 1.2.0
+title: "NeuroArch: Neuromorphic-VR Co-Design for Real-Time Building Energy and Comfort Optimization"
+message: "If you use this software or data, please cite it as below."
+type: software
+authors:
+  - family-names: Ali
+    given-names: Mohamed
+    affiliation: Virginia Tech
+  - family-names: Elsayed
+    given-names: Saher
+    affiliation: University of Pennsylvania
+    email: selsayed@seas.upenn.edu
+    orcid: https://orcid.org/0009-0007-7672-264X
+  - family-names: Aziz
+    given-names: Khairi Azhar
+    name-particle: Ts. Dr.
+    affiliation: Universiti Tenaga Nasional (UNITEN)
+    email: khairi.azhar@uniten.edu.my
+repository-code: https://github.com/NeuroArch-Lab/NeuroArch
+license: MIT
+version: 1.0.0
+date-released: "2025-01-01"
+doi: 10.1109/ACCESS.2025.XXXXXXX
+preferred-citation:
+  type: article
+  title: "NeuroArch: Neuromorphic-VR Co-Design for Real-Time Building Energy and Comfort Optimization"
+  authors:
+    - family-names: Ali
+      given-names: Mohamed
+    - family-names: Elsayed
+      given-names: Saher
+    - family-names: Aziz
+      given-names: Khairi Azhar
+      name-particle: Ts. Dr.
+  journal: "IEEE ACCESS"
+  year: 2025
+  doi: 10.1109/ACCESS.2025.XXXXXXX

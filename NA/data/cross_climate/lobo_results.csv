@@ -1,0 +1,6 @@
+leave_out,test_accuracy_pct,energy_saving_pct
+medium_office,88.4,22.1
+residential,89.3,22.8
+mixed_use,90.2,23.1
+seattle,91.8,21.4
+minneapolis,90.1,20.9

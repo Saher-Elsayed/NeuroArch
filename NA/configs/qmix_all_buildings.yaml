@@ -1,0 +1,23 @@
+# Multi-building QMIX configuration
+marl:
+  hidden_dim: 64
+  state_dim: 33
+  embed_dim: 64
+  n_episodes: 5000
+  episode_limit: 1440
+  batch_size: 64
+  buffer_size: 2000
+  lr: 3.0e-4
+  gamma: 0.99
+  tau: 0.005
+  epsilon_start: 1.0
+  epsilon_min: 0.02
+  epsilon_anneal_steps: 2000
+  grad_clip: 10.0
+  per: true
+  dueling: true
+
+buildings: [medium_office, residential, mixed_use]
+
+output:
+  dir: runs/qmix_all_buildings/

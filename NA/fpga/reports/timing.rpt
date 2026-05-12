@@ -1,0 +1,14 @@
+Vivado 2023.2 Post-Route Timing Summary
+Device: Artix-7 XC7A35T, -1 Speed Grade
+Target Period: 20.000 ns (50 MHz)
+
+Timing Summary:
+  WNS (Worst Negative Slack): +2.800 ns  [PASS]
+  TNS (Total Negative Slack):  0.000 ns  [PASS]
+  WHS (Worst Hold Slack):     +0.142 ns  [PASS]
+  THS (Total Hold Slack):      0.000 ns  [PASS]
+  Failing Endpoints: 0
+
+  Achievable Fmax: 52.8 MHz (derated to 50 MHz for 5% margin)
+  Critical path: lif_pe_i[0]/V_reg[15] -> comparator_tree/counts_reg[2][7]
+  Critical path delay: 17.200 ns

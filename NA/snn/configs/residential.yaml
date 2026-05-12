@@ -1,0 +1,10 @@
+building: residential
+data_dir: data/sensor_logs/residential
+output_dir: snn/weights
+T: 100
+batch_size: 64
+lr_p1: 5.0e-4
+lr_p2: 5.0e-5
+epochs_p1: 100
+epochs_p2: 50
+rate_reg: 0.01

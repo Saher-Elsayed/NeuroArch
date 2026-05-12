@@ -1,0 +1,6 @@
+controller,annual_kWh_m2,energy_saving_pct,ashrae55_compliance_pct,mean_ppd_pct,peak_demand_kW
+Rule-based_G36,159.4,0.0,83.4,18.2,312
+MPC_ROM,139.8,-12.3,87.1,14.6,291
+DDPG,132.8,-16.7,88.3,13.1,278
+QMIX_no_SNN,125.9,-21.0,90.2,11.8,261
+NeuroArch_QMIX,121.6,-23.7,91.3,10.4,248

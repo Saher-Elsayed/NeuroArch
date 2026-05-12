@@ -1,0 +1,6 @@
+climate,building,lobo_acc,kWh_m2,saving_pct,ppd
+Houston_2A,medium_office,87.4,108.6,-23.7,10.4
+Houston_2A,residential,86.1,95.1,-21.4,11.1
+Houston_2A,mixed_use,88.2,122.1,-24.2,10.2
+Seattle_4C,medium_office,91.8,72.3,-19.2,11.8
+Minneapolis_6A,medium_office,90.1,134.7,-17.4,12.6

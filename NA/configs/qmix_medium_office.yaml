@@ -1,0 +1,21 @@
+# QMIX configuration — matches paper Table 6
+marl:
+  hidden_dim: 64
+  state_dim: 33
+  embed_dim: 64
+  n_episodes: 2000
+  episode_limit: 1440
+  batch_size: 32
+  buffer_size: 500
+  lr: 5.0e-4
+  gamma: 0.99
+  tau: 0.005
+  epsilon_start: 1.0
+  epsilon_min: 0.05
+  epsilon_anneal_steps: 1000
+  grad_clip: 10.0
+  per: true
+  dueling: true
+
+output:
+  dir: runs/qmix_medium_office/

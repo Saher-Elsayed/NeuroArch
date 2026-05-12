@@ -1,0 +1,6 @@
+Vivado 2023.2 Post-Route Timing Summary
+Target clock: 50 MHz (20.000 ns period)
+Worst Negative Slack (WNS): +2.800 ns
+Total Negative Slack (TNS): 0.000 ns
+Number of Failing Endpoints: 0
+Fmax achieved: 52.8 MHz (derated to 50 MHz for margin)

@@ -1,0 +1,19 @@
+Vivado 2023.2 Power Analysis Report
+Device: Artix-7 XC7A35T
+Operating conditions: 1.0V, 25°C, typical
+
++------------------------------------+----------+----------+
+| Component                          | Power(mW)| Share(%) |
++------------------------------------+----------+----------+
+| BRAM static leakage (6x36Kb)       | 0.192    | 61.9     |
+| Clock distribution (BUFG + MMCM)   | 0.054    | 17.4     |
+| AXI-Stream interface logic          | 0.031    | 10.0     |
+| PE array dynamic (LUT6 + FF)        | 0.025    |  8.1     |
+| Miscellaneous I/O termination       | 0.008    |  2.6     |
++------------------------------------+----------+----------+
+| TOTAL                              | 0.310    | 100.0    |
++------------------------------------+----------+----------+
+| At 85°C worst case                 | 0.720    |          |
+| Budget (10 mW edge limit)          | 10.000   |          |
+| Margin                             | 9.280    |          |
++------------------------------------+----------+----------+

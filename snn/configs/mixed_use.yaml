@@ -1,0 +1,10 @@
+building: mixed_use
+data_dir: ../data/sensor_logs/mixed_use
+output_dir: weights/
+T: 100
+batch_size: 64
+lr_phase1: 5.0e-4
+lr_phase2: 5.0e-5
+epochs_phase1: 100
+epochs_phase2: 50
+rate_reg: 0.01

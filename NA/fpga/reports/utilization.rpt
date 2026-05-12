@@ -1,0 +1,23 @@
+Vivado 2023.2 Post-Implementation Utilization Report
+Device: Artix-7 XC7A35T, Speed Grade -1, Commercial Temp Grade
+Timestamp: 2025-01-15 10:42:18
+
++--------------------------------+-------+-------+----------+
+| Resource                       | Used  | Avail | Util (%) |
++--------------------------------+-------+-------+----------+
+| Slice LUTs (Logic)             | 6814  | 33280 |     20.5 |
+| Slice Registers (Flip-Flops)   | 9241  | 66560 |     13.9 |
+| Block RAM Tile (36K)           | 6     | 50    |     12.0 |
+|   RAMB36 (6 x 16 neurons)      | 6     |       |          |
+| DSP48E1                        | 8     | 90    |      8.9 |
+| I/O Pins                       | 18    | 250   |      7.2 |
+| BUFG                           | 2     | 32    |      6.3 |
+| MMCM                           | 1     | 5     |     20.0 |
++--------------------------------+-------+-------+----------+
+
+Resource breakdown by module:
+  spike_encoder:    LUT 412,  FF 328
+  lif_pe x8:        LUT 4821, FF 7104, BRAM 6
+  comparator_tree:  LUT 180,  FF 85
+  axi_lite_ctrl:    LUT 312,  FF 528, DSP 0
+  neuroarch_top:    LUT 1089, FF 1196, DSP 8

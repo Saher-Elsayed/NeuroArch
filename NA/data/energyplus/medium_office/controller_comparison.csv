@@ -1,0 +1,6 @@
+controller,energy_kwh_yr,energy_saving_pct,ashrae55_compliance_pct,mean_ppd_pct,peak_demand_kw,compute_ms_per_step
+Rule-Based,2446909.3049102994,0.0,78.2,15.3,405.6,0.5
+MPC,2128811.0952719604,13.0,86.4,12.1,373.15200000000004,1850.0
+PID Cascade,2300094.7466156813,6.0,80.1,14.7,393.432,0.8
+DQN Baseline,2006465.6300264453,18.0,88.7,11.8,356.928,12.0
+NeuroArch (QMIX),1866991.7996465587,23.7,91.3,10.4,248.0,4.1
