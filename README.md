@@ -181,7 +181,7 @@ bash experiments/plot_all_figures.sh
 ## Citation
 
 ```bibtex
-@article{ali2026neuroarch,
+@article{elsayed2026neuroarch,
   title     = {{NeuroArch}: Spiking Neural Networks and Virtual Reality
                for Building Energy Optimization},
   author    = {Elsayed, Saher and Ali, Mohamed and Aziz, Khairi Azhar},
