@@ -94,7 +94,7 @@ NeuroArch/
 │   ├── latency/           # 10,000-frame E2E latency log
 │   ├── pareto/            # Pareto frontier (Table 12)
 │   ├── cross_climate/     # LOBO cross-climate results (Table 9)
-│   └── user_study/        # 32-participant VR study (IRB-25-1047, Virginia Tech)
+│   └── user_study/        # 32-participant VR study 
 │
 ├── scripts/               # Figure reproduction scripts
 ├── notebooks/             # Jupyter notebooks (training demo, MARL eval, energy analysis)
