@@ -174,7 +174,7 @@ bash experiments/plot_all_figures.sh
 | `energyplus/{building}/simulation_8760h.csv` | Annual EnergyPlus simulation | 8,760/building | ~600 KB |
 | `energyplus/{building}/controller_comparison.csv` | Table 4 data | 5 controllers | 1 KB |
 | `latency/frame_latency_10000.csv` | E2E latency per frame | 10,000 | 400 KB |
-| `user_study/participants.csv` | VR user study (IRB-25-1047) | 32 | 5 KB |
+| `user_study/participants.csv` | VR user study | 32 | 5 KB |
 
 ---
 
@@ -207,6 +207,3 @@ bash experiments/plot_all_figures.sh
 ## License
 
 MIT License. See [LICENSE](LICENSE).
-
-Human subject data in `data/user_study/` is shared under IRB-25-1047 approval
-(Virginia Tech). Participant identifiers are anonymized.
